@@ -2,10 +2,6 @@
 
 pragma solidity ^0.8.0;
 
-interface SomeInterface {
-    function transfer(address to, uint value) external;
-}
-
 contract Example {
     event Called(address from, uint value, bytes data);
 
