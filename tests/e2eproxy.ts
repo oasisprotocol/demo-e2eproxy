@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: CC-PDDC
 
+import { randomBytes } from "crypto";
 import { expect } from 'chai';
 import { ethers } from "hardhat";
 import { Interface } from '@ethersproject/abi';
@@ -10,8 +11,12 @@ describe('E2EProxy', function () {
     async function deploy() {
         const Example_Contract = await ethers.getContractFactory("Example");
         const example = await Example_Contract.deploy();
+
+        const extra_entropy = randomBytes(128);
+
         const E2EProxy_Contract = await ethers.getContractFactory("E2EProxy");
-        const e2e = await E2EProxy_Contract.deploy();
+        const e2e = await E2EProxy_Contract.deploy(ethers.utils.arrayify(extra_entropy));
+
         return { example, e2e };
     }
 

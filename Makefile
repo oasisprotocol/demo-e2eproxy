@@ -13,7 +13,7 @@ hardhat-compile:
 	$(DOCKER_RUN_DEV) pnpm hardhat compile
 
 hardhat-test:
-	$(DOCKER_RUN_DEV) pnpm hardhat test
+	$(DOCKER_RUN_DEV) pnpm hardhat test --network sapphire_local
 
 pnpm-install:
 	$(DOCKER_RUN_DEV) pnpm install
