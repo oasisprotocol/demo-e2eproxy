@@ -6,7 +6,7 @@ Using the [@oasis-protocol/sapphire-contracts](https://www.npmjs.com/package/@oa
 
 While [@oasis-protocol/sapphire-hardhat](https://www.npmjs.com/package/@oasisprotocol/sapphire-hardhat) package makes testing easy with Hardhat, you also need to run a local [sapphire-dev](https://github.com/oasisprotocol/oasis-web3-gateway/pkgs/container/sapphire-dev) instance which supports the necessary EVM precompiles.
 
-For your convenience there is a `Makefile`:
+For your convenience there is a `Makefile` which uses Docker to keep everything neatly contained:
 
 ```
 make sapphire-dev &  # This will take a few minutes
