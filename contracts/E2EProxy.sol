@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import "@oasisprotocol/sapphire-contracts/contracts/Sapphire.sol";
+import {Sapphire} from "@oasisprotocol/sapphire-contracts/contracts/Sapphire.sol";
 
 contract E2EProxy {
     Sapphire.Curve25519PublicKey internal immutable publicKey;
@@ -20,13 +20,54 @@ contract E2EProxy {
         return Sapphire.Curve25519PublicKey.unwrap(publicKey);
     }
 
+    function personalization(uint256 value)
+        public pure
+        returns (bytes memory)
+    {
+        return "";
+        /*
+        return abi.encodePacked(
+            block.chainid,
+            address(this),
+            msg.sender,
+            value
+        );
+        */
+    }
+
+    function encryptCall (bytes32 symmetricKey, address addr, bytes memory subcall_data, uint256 value)
+        public view
+        returns (bytes32 nonce, bytes memory ciphertext)
+    {
+        nonce = bytes32(Sapphire.randomBytes(32, ""));
+
+        bytes memory plaintext = abi.encode(addr, subcall_data);
+
+        ciphertext = Sapphire.encrypt(symmetricKey, nonce, plaintext, personalization(value));
+    }
+
+    event Test (bytes plaintext);
+
     function proxy(bytes32 peerPublicKey, bytes32 nonce, bytes memory data)
         external payable
+        returns (bytes memory)
     {
         bytes32 symmetricKey = Sapphire.deriveSymmetricKey(Sapphire.Curve25519PublicKey.wrap(peerPublicKey), privateKey);
 
-        (address addr, bytes memory subcall_data) = abi.decode(Sapphire.decrypt(symmetricKey, nonce, data, ""), (address, bytes));
+        bytes memory plaintext = Sapphire.decrypt(symmetricKey, nonce, data, personalization(msg.value));
 
-        (bool success, bytes memory subcall_ret) = addr.call{value: msg.value}(subcall_data);
+        emit Test(plaintext);
+
+        (address addr, bytes memory subcall_data) = abi.decode(plaintext, (address, bytes));
+
+        require( addr != address(this), "Cannot call this!" );
+
+        (bool success, bytes memory out_data) = addr.call{value: msg.value}(subcall_data);
+        assembly {
+            switch success
+            case 0 { revert(add(out_data,32),mload(out_data)) }
+        }
+
+        return out_data;
     }
 }
