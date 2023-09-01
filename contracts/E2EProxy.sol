@@ -46,8 +46,6 @@ contract E2EProxy {
         ciphertext = Sapphire.encrypt(symmetricKey, nonce, plaintext, personalization(value));
     }
 
-    event Test (bytes plaintext);
-
     function proxy(bytes32 peerPublicKey, bytes32 nonce, bytes memory data)
         external payable
         returns (bytes memory)
@@ -55,8 +53,6 @@ contract E2EProxy {
         bytes32 symmetricKey = Sapphire.deriveSymmetricKey(Sapphire.Curve25519PublicKey.wrap(peerPublicKey), privateKey);
 
         bytes memory plaintext = Sapphire.decrypt(symmetricKey, nonce, data, personalization(msg.value));
-
-        emit Test(plaintext);
 
         (address addr, bytes memory subcall_data) = abi.decode(plaintext, (address, bytes));
 
