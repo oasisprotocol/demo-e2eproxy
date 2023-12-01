@@ -41,18 +41,18 @@ const config: HardhatUserConfig = {
     hardhat: {
       chainId: 1337 // We set 1337 to make interacting with MetaMask simpler
     },
-    sapphire_local: {
+    'sapphire-localnet': {
       url: "http://localhost:8545",
       accounts: TEST_HDWALLET,
       chainId: 0x5afd,
     },
     // https://docs.oasis.io/dapp/sapphire/
-    sapphire_mainnet: {
+    sapphire: {
       url: "https://sapphire.oasis.io/",
       accounts: env_private_key,
       chainId: 0x5afe,
     },
-    sapphire_testnet: {
+    'sapphire-testnet': {
       url: "https://testnet.sapphire.oasis.dev",
       accounts: TEST_HDWALLET,
       chainId: 0x5aff,
