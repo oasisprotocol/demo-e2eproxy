@@ -52,6 +52,11 @@ const config: HardhatUserConfig = {
       accounts: env_private_key,
       chainId: 0x5afe,
     },
+    'sapphire-1rpc': {
+      url: 'https://1rpc.io/oasis/sapphire',
+      accounts: env_private_key,
+      chainId: 0x5afe
+    },
     'sapphire-testnet': {
       url: "https://testnet.sapphire.oasis.dev",
       accounts: TEST_HDWALLET,
