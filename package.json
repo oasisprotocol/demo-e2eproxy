@@ -28,7 +28,7 @@
         "typescript": "^5.2.2"
     },
     "dependencies": {
-        "@oasisprotocol/sapphire-contracts": "^0.2.4",
+        "@oasisprotocol/sapphire-contracts": "^0.2.5",
         "@oasisprotocol/sapphire-paratime": "^1.2.2",
         "ethers": "^6.9.0"
     }
